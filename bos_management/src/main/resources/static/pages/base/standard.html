@@ -16,10 +16,13 @@
 		<script type="text/javascript" src="../../js/easyui/ext/jquery.cookie.js"></script>
 		<script src="../../js/easyui/locale/easyui-lang-zh_CN.js" type="text/javascript"></script>
 		<script type="text/javascript">
+
+
+
+
 			$(function(){
 				// 先将body隐藏，再显示，不会出现页面刷新效果
 				$("body").css({visibility:"visible"});
-				
 				// 收派标准信息表格
 				$('#grid').datagrid( {
 					iconCls : 'icon-forward',
@@ -27,36 +30,98 @@
 					border : false,
 					rownumbers : true,
 					striped : true,
-					pageList: [30,50,100],
+					pageList: [5,10,30,50,100],
 					pagination : true,
 					toolbar : toolbar,
-					url : "../../data/standard.json",
+					url : "../../page/find",
 					idField : 'id',
 					columns : columns
 				});
-			});	
-			
+
+                $("#save").click(function () {
+
+                    if($("#form").form("validate")){
+                        $.post("../../standard/save",$("#form").serialize(),function (data) {
+                            if (data.success){
+                                $.messager.show({
+                                    title:'提示窗口',
+                                    mag:data.message
+                                });
+
+                                //重置表单
+								$("#form").get(0).reset();
+								//刷新页面
+								$("#grid").datagrid("reload");
+								//关闭窗口
+                                $("#standardWindow").window('close');
+                            }
+                        })
+
+                    }
+                })
+
+			});
+
+
+
 			//工具栏
 			var toolbar = [ {
 				id : 'button-add',
 				text : '增加',
 				iconCls : 'icon-add',
 				handler : function(){
-					alert('增加');
+                    $("#standardWindow").window('open');
+                    $("#form").form('clear');
 				}
 			}, {
 				id : 'button-edit',
 				text : '修改',
+
 				iconCls : 'icon-edit',
 				handler : function(){
-					alert('修改');
+				    var datagrid = $("#grid").datagrid('getSelections');
+				    if(datagrid.length==1){
+                        $("#standardWindow").window('open');
+                        $("#form").form('load',datagrid[0]);
+
+					}
+
 				}
 			},{
 				id : 'button-delete',
 				text : '作废',
 				iconCls : 'icon-cancel',
 				handler : function(){
-					alert('作废');
+
+                    var selRow = $("#grid").datagrid("getSelections");
+
+                    if(selRow.length==0){
+                        alert("请至少选择一行数据!");
+                        return false;
+                    }
+                    var ids=[];
+                    for (var i = 0; i < selRow.length; i++) {
+                        //获取自定义table 的中的checkbox值
+                        var id=selRow[i].id;   //OTRECORDID这个是你要在列表中取的单个id
+                        ids.push(id); //然后把单个id循环放到ids的数组中
+                    }
+
+
+                    if(confirm("确定要删除选中的超温记录吗?")){
+                        $.post("../../standard/del?ids="+ids,function (data) {
+                            console.log(ids+"aaa");
+                            if (data.success){
+                                $.messager.show({
+                                    title:'提示窗口',
+                                    mag:data.message
+                                });
+                            }
+                        })
+                        $("#grid").datagrid('clearSelections');
+                        //刷新页面
+                        $("#grid").datagrid("reload");
+
+                    }
 				}
 			},{
 				id : 'button-restore',
@@ -115,11 +180,12 @@
 		</script>
 	</head>
 
+
 	<body class="easyui-layout" style="visibility:hidden;">
 		<div region="center" border="false">
 			<table id="grid"></table>
 		</div>
-		
+
 		<div class="easyui-window" title="对收派标准进行添加或者修改" id="standardWindow" collapsible="false" minimizable="false" maximizable="false" modal="true" closed="true" style="width:600px;top:50px;left:200px">
 			<div region="north" style="height:31px;overflow:hidden;" split="false" border="false">
 				<div class="datagrid-toolbar">
@@ -129,7 +195,7 @@
 
 			<div region="center" style="overflow:auto;padding:5px;" border="false">
 				
-				<form>
+				<form id="form">
 					<table class="table-edit" width="80%" align="center">
 						<tr class="title">
 							<td colspan="2">收派标准信息
@@ -173,6 +239,7 @@
 				</form>
 			</div>
 		</div>
+
 	</body>
 
 </html>
