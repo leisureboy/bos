@@ -51,4 +51,5 @@ public class Courier {
 	@ManyToMany(mappedBy = "couriers")
 	private Set<FixedArea> fixedAreas = new HashSet<>();
 
+
 }

@@ -7,6 +7,9 @@ import cn.itcast.service.StandardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Map;
+
 @Service
 public class StandardServiceImpl implements StandardService {
     @Autowired
@@ -23,6 +26,12 @@ public class StandardServiceImpl implements StandardService {
             standardDao.deleteById(id);
         }
 
+    }
+
+    @Override
+    public List<Standard> findAll() {
+        List<Standard> all = standardDao.findAll();
+        return all;
     }
 
 }

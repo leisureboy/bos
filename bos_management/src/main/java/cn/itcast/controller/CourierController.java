@@ -23,4 +23,16 @@ public class CourierController {
         }
 
     }
+
+    @RequestMapping("/del")
+    public ResponseResult del(Integer[] ids){
+        try {
+            courierService.del(ids);
+            return ResponseResult.SUCCESS();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseResult.FAIL();
+        }
+    }
+
 }

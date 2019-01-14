@@ -13,8 +13,13 @@
 		<script type="text/javascript" src="../../js/easyui/jquery.easyui.min.js"></script>
 		<script type="text/javascript" src="../../js/easyui/ext/jquery.portal.js"></script>
 		<script type="text/javascript" src="../../js/easyui/ext/jquery.cookie.js"></script>
+		<script type="text/javascript"  src="../../js/jquery.ocupload-1.1.2.js"></script>
 		<script src="../../js/easyui/locale/easyui-lang-zh_CN.js" type="text/javascript"></script>
+
 		<script type="text/javascript">
+
+
+
 			function doAdd(){
 				$('#addWindow').window("open");
 			}
@@ -26,6 +31,8 @@
 			function doDelete(){
 				alert("删除...");
 			}
+
+
 			
 			//工具栏
 			var toolbar = [ {
@@ -95,10 +102,10 @@
 					border : false,
 					rownumbers : true,
 					striped : true,
-					pageList: [30,50,100],
+					pageList: [5,30,50,100],
 					pagination : true,
 					toolbar : toolbar,
-					url : "../../data/area.json",
+					url : "../../page/area",
 					idField : 'id',
 					columns : columns,
 					onDblClickRow : doDblClickRow
@@ -114,6 +121,27 @@
 			        height: 400,
 			        resizable:false
 			    });
+
+				$("#button-import").upload({
+					name:"file",
+					action:'../../area/upload',
+					onSelect:function () {
+						this.autoSubmit=false;
+						var fileName = this.filename();
+						console.log(fileName);
+                        var regex = /^.*\.(xls|xlsx)$/;
+						if(regex.test(fileName)){
+						    this.submit();
+						}else {
+						    $.messager.alert("警告","仅支持Excel格式的上传","warning")
+						}
+
+                    },
+					onComplete:function (res) {
+						alert("ojbk");
+						$("#grid").datagrid("reload");
+                    }
+				})
 				
 			});
 		
@@ -180,6 +208,7 @@
 				</form>
 			</div>
 		</div>
+
 		
 		<!-- 查询区域-->
 		<div class="easyui-window" title="查询区域窗口" closed="true" id="searchWindow" collapsible="false" minimizable="false" maximizable="false" style="width: 400px; top:40px;left:200px">

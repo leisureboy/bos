@@ -16,4 +16,12 @@ public class CourierServiceImpl implements CourierService {
     public void save(Courier courier) {
         courierDao.save(courier);
     }
+
+    @Override
+    public void del(Integer[] ids){
+        for (Integer id : ids) {
+            courierDao.UpdateDelTag(id);
+        }
+
+    }
 }

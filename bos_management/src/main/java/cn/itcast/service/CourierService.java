@@ -5,4 +5,6 @@ import cn.itcast.bos.domain.base.Standard;
 
 public interface CourierService {
     public void save(Courier courier);
+
+    public void del(Integer[] ids);
 }
