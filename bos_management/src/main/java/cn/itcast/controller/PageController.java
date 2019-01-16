@@ -38,7 +38,7 @@ public class PageController {
         if (rows<1){
             rows=5;
         }
-        Pageable pageable= PageRequest.of(page-1,rows);
+        Pageable pageable= new PageRequest(page-1,rows);
         Page<Standard> pageDate = pageService.findByPage(pageable);
         Map<String,Object> result=new HashMap<String,Object>();
         result.put("total",pageDate.getTotalElements());
@@ -54,7 +54,7 @@ public class PageController {
         if (rows<1){
             rows=5;
         }
-        Pageable pageable= PageRequest.of(page-1,rows);
+        Pageable pageable= new PageRequest(page-1,rows);
     //查询条件
         Specification specification=new Specification() {
             @Override
@@ -100,7 +100,7 @@ public class PageController {
         if (rows<1){
             rows=5;
         }
-        Pageable pageable= PageRequest.of(page-1,rows);
+        Pageable pageable= new PageRequest(page-1,rows);;
         Page<Area> pageDate = areaService.findArea(pageable);
         Map<String,Object> result=new HashMap<String,Object>();
         result.put("total",pageDate.getTotalElements());

@@ -1,7 +1,7 @@
 package cn.itcast.controller;
 
 import cn.itcast.bos.domain.base.Courier;
-import cn.itcast.bos.domain.common.ResponseResult;
+import cn.itcast.bos.common.ResponseResult;
 import cn.itcast.service.CourierService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;

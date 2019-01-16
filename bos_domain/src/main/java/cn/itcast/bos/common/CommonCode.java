@@ -1,4 +1,4 @@
-package cn.itcast.bos.domain.common;
+package cn.itcast.bos.common;
 
 import lombok.ToString;
 

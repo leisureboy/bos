@@ -10,7 +10,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
  * @version 1.0
  **/
 @SpringBootApplication
-@EntityScan("cn.itcast.bos.domain.base")//扫描实体类
+@EntityScan("cn.itcast.bos.domain")//扫描实体类
 public class BosManagementApplication {
     public static void main(String[] args) throws Exception {
         SpringApplication.run(BosManagementApplication.class, args);
